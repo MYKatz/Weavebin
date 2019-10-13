@@ -1,3 +1,8 @@
+state = {
+  loggedIn: false,
+  wallet: null
+};
+
 var textarea = document.querySelector("textarea");
 
 textarea.addEventListener("keydown", autosize);
@@ -37,5 +42,17 @@ span.onclick = function() {
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
+  }
+};
+
+//file upload stuff
+
+var filechoose = document.getElementById("keychoose");
+
+filechoose.onchange = function(e) {
+  var filelist = filechoose.files;
+  if (filelist) {
+    console.log(filelist);
+    login(filelist);
   }
 };
