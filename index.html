@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Weavebin</title>
+    <meta name="description" content="Weavebin" />
+    <meta name="author" content="Matt Katz | github.com/mykatz" />
+
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="weavebin.css" />
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+      <a class="navbar-brand" href="#">Weavebin</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto"></ul>
+        <button class="btn btn-light my-2 my-sm-0" type="submit" id="loginBtn">Sign In</button>
+      </div>
+    </nav>
+
+    <div class="container-fluid my-3">
+      <div class="row">
+        <div class="col-lg-9 my-1">
+          <div class="box shadow-sm">
+            <div class="p-4">
+              <h3>New Paste</h3>
+              <hr />
+              <form>
+                <div class="form-group">
+                  <textarea class="form-control" id="text" rows="5"></textarea>
+                </div>
+                <div class="my-3"><b>Optional settings</b></div>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Syntax highlighting</label>
+                  <select class="form-control" id="exampleFormControlSelect1">
+                    <option>None</option>
+                    <option>Javascript</option>
+                    <option>C++</option>
+                    <option>Python</option>
+                    <option>Go</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Title</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="My awesome paste" />
+                </div>
+                <button type="submit" class="btn btn-dark">Post</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 my-1 recent">
+          <div class="box shadow-sm">
+            <div class="p-4">
+              <h3>Recent</h3>
+              <hr />
+              <div id="recent-list">
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+                <div class="postbox shadow-sm my-3">
+                  <div class="mx-2 py-1">
+                    <div class="posttitle my-1"><a href="#">Post title</a></div>
+                    <div class="postdate">April 20th, 2019</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/arweave/bundles/web.bundle.min.js"></script>
+    <script>
+      const arweave = Arweave.init({
+        host: "arweave.net",
+        port: 443,
+        protocol: "https",
+        timeout: 20000,
+        logging: false
+      });
+      arweave.network.getInfo().then(console.log);
+    </script>
+  </body>
+</html>
