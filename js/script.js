@@ -1,6 +1,7 @@
 state = {
   loggedIn: false,
-  wallet: null
+  wallet: null,
+  jwk: null
 };
 
 var textarea = document.querySelector("textarea");
@@ -30,6 +31,9 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on the button, open the modal
 btn.onclick = function() {
+  if (state.loggedIn) {
+    location.reload();
+  }
   modal.style.display = "block";
 };
 
@@ -52,7 +56,47 @@ var filechoose = document.getElementById("keychoose");
 filechoose.onchange = function(e) {
   var filelist = filechoose.files;
   if (filelist) {
-    console.log(filelist);
-    login(filelist);
+    login(filelist, function(ev) {
+      try {
+        wallet = JSON.parse(ev.target.result);
+
+        arweave.wallets.jwkToAddress(wallet).then((address) => {
+          loginHandler(wallet, address);
+        });
+      } catch (err) {
+        alert("Error logging in. Please try again.");
+        filechoose.value = "";
+        success = false;
+      } finally {
+      }
+    });
   }
+};
+
+function loginHandler(jwk, address) {
+  state.loggedIn = true;
+  state.wallet = address;
+  state.jwk = jwk;
+  document.getElementById("loginBtn").innerText = "Sign Out";
+  modal.style.display = "none";
+}
+
+function post() {
+  if (state.loggedIn) {
+    var paste = document.getElementById("text").value;
+    var syntax = document.getElementById("select").value;
+    var title = document.getElementById("textInput").value || "Untitled Paste";
+    console.log(paste);
+    console.log(syntax);
+    console.log(title);
+    alert("Making post");
+  } else {
+    alert("You must be signed in to make a post.");
+  }
+}
+
+var sub = document.getElementById("submitBtn");
+
+sub.onclick = function() {
+  post();
 };
