@@ -81,7 +81,7 @@ function loginHandler(jwk, address) {
   modal.style.display = "none";
 }
 
-function post() {
+async function post() {
   if (state.loggedIn) {
     var paste = document.getElementById("text").value;
     var syntax = document.getElementById("select").value;
@@ -90,6 +90,20 @@ function post() {
     console.log(syntax);
     console.log(title);
     alert("Making post");
+    var transaction = await arweave.createTransaction(
+      {
+        data: paste
+      },
+      state.jwk
+    );
+    transaction.addTag("Application-ID", "Weavebin");
+    transaction.addTag("Syntax-Highlight", syntax);
+    transaction.addTag("Title", title);
+
+    await arweave.transactions.sign(transaction, state.jwk);
+    const response = await arweave.transactions.post(transaction);
+    console.log(response);
+    console.log(transaction);
   } else {
     alert("You must be signed in to make a post.");
   }
@@ -100,3 +114,11 @@ var sub = document.getElementById("submitBtn");
 sub.onclick = function() {
   post();
 };
+
+function displayHeader() {
+  var h = document.getElementById("headertext");
+  h.classList.remove("displaynone");
+  h.classList.remove("hidden");
+  h.classList.add("visible");
+  console.log(h);
+}
