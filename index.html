@@ -32,6 +32,7 @@
       <div class="row headeralert displaynone hidden" id="headertext">
         <div class="box shadow-sm col-12" style="text-align: center">
           <div class="center">Paste <a href="#" id="newpasteid"></a> created!</div>
+          <div>Note: your paste has been included in the next Arweave block. It may take some time to become available</div>
         </div>
       </div>
       <div class="row">
@@ -79,56 +80,7 @@
             <div class="p-4">
               <h3>Recent</h3>
               <hr />
-              <div id="recent-list">
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-                <div class="postbox shadow-sm my-3">
-                  <div class="mx-2 py-1">
-                    <div class="posttitle my-1"><a href="#">Post title</a></div>
-                    <div class="postdate">April 20th, 2019</div>
-                  </div>
-                </div>
-              </div>
+              <div id="recent-list"></div>
             </div>
           </div>
         </div>
@@ -156,6 +108,7 @@
         logging: false
       });
       arweave.network.getInfo().then(console.log);
+      getTransactions();
       if (urlVariables.pasteId) {
         try {
           getPaste(urlVariables.pasteId);

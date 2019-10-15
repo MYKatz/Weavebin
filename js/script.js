@@ -98,6 +98,7 @@ async function post() {
     await arweave.transactions.sign(transaction, state.jwk);
     const response = await arweave.transactions.post(transaction);
     displayHeader(transaction.id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   } else {
     alert("You must be signed in to make a post.");
   }
@@ -175,4 +176,41 @@ async function getTransactionsFromAddress(addr) {
   });
 
   console.log(txids);
+}
+
+async function getTransactions() {
+  const txids = await arweave.arql({
+    op: "and",
+    expr1: {
+      op: "equals",
+      expr1: "Application-ID",
+      expr2: "Weavebin"
+    },
+    expr2: {
+      op: "equals",
+      expr1: "Application-ID",
+      expr2: "Weavebin"
+    }
+  });
+  var recentPastes = document.getElementById("recent-list");
+  for (var i = 0; i < Math.min(10, txids.length); i++) {
+    let tx = await processPasteFromId(txids[i]);
+    recentPastes.innerHTML += `<div class="postbox shadow-sm my-3">
+    <div class="mx-2 py-1">
+      <div class="posttitle my-1"><a href="?pasteId=${txids[i]}">${tx.Title}</a></div>
+      <div class="postdate">${tx["Syntax-Highlight"]}</div>
+    </div>
+  </div>`;
+  }
+}
+
+async function processPasteFromId(txid) {
+  var transaction = await arweave.transactions.get(txid);
+  var tags = {};
+  transaction.get("tags").forEach((tag) => {
+    let key = tag.get("name", { decode: true, string: true });
+    let value = tag.get("value", { decode: true, string: true });
+    tags[key] = value;
+  });
+  return tags;
 }
