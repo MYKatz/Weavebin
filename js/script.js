@@ -86,10 +86,6 @@ async function post() {
     var paste = document.getElementById("text").value;
     var syntax = document.getElementById("select").value;
     var title = document.getElementById("textInput").value || "Untitled Paste";
-    console.log(paste);
-    console.log(syntax);
-    console.log(title);
-    alert("Making post");
     var transaction = await arweave.createTransaction(
       {
         data: paste
@@ -99,11 +95,9 @@ async function post() {
     transaction.addTag("Application-ID", "Weavebin");
     transaction.addTag("Syntax-Highlight", syntax);
     transaction.addTag("Title", title);
-
     await arweave.transactions.sign(transaction, state.jwk);
     const response = await arweave.transactions.post(transaction);
-    console.log(response);
-    console.log(transaction);
+    displayHeader(transaction.id);
   } else {
     alert("You must be signed in to make a post.");
   }
@@ -115,10 +109,70 @@ sub.onclick = function() {
   post();
 };
 
-function displayHeader() {
+function displayHeader(pasteid) {
   var h = document.getElementById("headertext");
+  var id = document.getElementById("newpasteid");
+  id.innerText = pasteid;
+  id.href = "?pasteId=" + pasteid;
   h.classList.remove("displaynone");
   h.classList.remove("hidden");
   h.classList.add("visible");
-  console.log(h);
+}
+
+function toggleMain(tags) {
+  var p = document.getElementById("pastedisplay");
+  var f = document.getElementById("newpaste");
+
+  document.getElementById("postname").innerText = "Paste: " + tags.Title;
+  document.getElementById("pastetext").innerText = tags.Text;
+  document.getElementById("pastetext").classList.add(tags["Syntax-Highlight"]);
+
+  f.classList.add("displaynone");
+  p.classList.remove("displaynone");
+  hljs.highlightBlock(document.getElementById("preid"));
+}
+
+//get url vars
+function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+    vars[key] = value;
+  });
+  return vars;
+}
+
+async function getPaste(txid) {
+  var transaction;
+  try {
+    transaction = await arweave.transactions.get(txid);
+  } catch {
+    alert("Invalid paste. ID is either invalid, or paste has not been uploaded to the blockchain yet. Try again in a few minutes.");
+  }
+  var text = transaction.get("data", { decode: true, string: true });
+  var tags = {};
+  tags["Text"] = text;
+  transaction.get("tags").forEach((tag) => {
+    let key = tag.get("name", { decode: true, string: true });
+    let value = tag.get("value", { decode: true, string: true });
+    tags[key] = value;
+  });
+  toggleMain(tags);
+}
+
+async function getTransactionsFromAddress(addr) {
+  const txids = await arweave.arql({
+    op: "and",
+    expr1: {
+      op: "equals",
+      expr1: "from",
+      expr2: addr
+    },
+    expr2: {
+      op: "equals",
+      expr1: "Application-ID",
+      expr2: "Weavebin"
+    }
+  });
+
+  console.log(txids);
 }

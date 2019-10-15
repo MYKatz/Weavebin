@@ -10,13 +10,14 @@
 
     <link rel="stylesheet" href="bootstrap.min.css" />
     <link rel="stylesheet" href="weavebin.css" />
+    <link rel="stylesheet" href="atom-one-light.css" />
 
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-      <a class="navbar-brand" href="#">Weavebin</a>
+      <a class="navbar-brand" href="index.html">Weavebin</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -30,11 +31,11 @@
     <div class="container-fluid my-3">
       <div class="row headeralert displaynone hidden" id="headertext">
         <div class="box shadow-sm col-12" style="text-align: center">
-          <div class="center">Paste created! <a href="#">this is a link</a></div>
+          <div class="center">Paste <a href="#" id="newpasteid"></a> created!</div>
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-9 my-1">
+        <div class="col-lg-9 my-1" id="newpaste">
           <div class="box shadow-sm">
             <div class="p-4">
               <h3>New Paste</h3>
@@ -60,6 +61,16 @@
                 </div>
                 <button id="submitBtn" class="btn btn-dark">Post</button>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9 my-1 displaynone" id="pastedisplay">
+          <div class="box shadow-sm" style="min-height: 100%">
+            <div class="p-4">
+              <h3 id="postname">Post id: xyzABC123</h3>
+              <hr />
+              <pre id="preid"><code id="pastetext">
+                </code></pre>
             </div>
           </div>
         </div>
@@ -131,10 +142,12 @@
         <input type="file" id="keychoose" />
       </div>
     </div>
+    <script src="js/highlight.pack.js"></script>
     <script src="js/login.js"></script>
     <script src="js/script.js"></script>
     <script src="https://unpkg.com/arweave/bundles/web.bundle.min.js"></script>
     <script>
+      urlVariables = getUrlVars();
       const arweave = Arweave.init({
         host: "arweave.net",
         port: 443,
@@ -143,6 +156,14 @@
         logging: false
       });
       arweave.network.getInfo().then(console.log);
+      if (urlVariables.pasteId) {
+        try {
+          getPaste(urlVariables.pasteId);
+        } catch {
+          alert("Invalid paste. ID is either invalid, or paste has not been uploaded to the blockchain yet. Try again in a few minutes.");
+        }
+      }
+      hljs.initHighlightingOnLoad();
     </script>
   </body>
 </html>
